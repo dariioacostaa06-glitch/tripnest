@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TripNest — Escapadas a medida desde Córdoba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  *{font-family:'Inter',sans-serif}
+  body{background:#0a0a0a;color:#f0f0f0}
+  :root{--accent:#0ea5e9;--accent2:#0284c7}
+  .glass{background:rgba(255,255,255,.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08)}
+  .accent{color:var(--accent)}
+  .accent-bg{background:var(--accent)}
+  .btn-primary{background:var(--accent);color:#000;font-weight:700;transition:all .2s;border-radius:12px;padding:14px 28px;border:none;cursor:pointer}
+  .btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(14,165,233,.6)}
+  .card{background:#111;border:1px solid #1f1f1f;border-radius:20px;transition:all .3s}
+  .card:hover{border-color:rgba(14,165,233,.4);transform:translateY(-4px)}
+  .pulse-dot{width:8px;height:8px;border-radius:9999px;background:#22c55e;animation:pulse-anim 1.6s infinite}
+  @keyframes pulse-anim{
+    0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}
+    70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}
+    100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}
+  }
+  .dest-btn{transition:all .2s;border:1px solid #1f1f1f;border-radius:14px}
+  .dest-btn.active{border-color:var(--accent);background:rgba(14,165,233,.12);box-shadow:0 0 0 1px rgba(14,165,233,.4) inset}
+  .fav-btn{transition:all .2s}
+  .fav-btn.active{color:#f43f5e;transform:scale(1.15)}
+  input[type="date"]{color-scheme:dark}
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-track{background:#0a0a0a}
+  ::-webkit-scrollbar-thumb{background:#1f1f1f;border-radius:8px}
+  .fade-in{animation:fadeIn .4s ease both}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body class="antialiased">
+
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50 glass">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl accent-bg flex items-center justify-center text-black font-extrabold text-lg">TN</div>
+      <span class="font-extrabold text-xl tracking-tight">TripNest <span class="text-2xl">✈️</span></span>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+      <a href="#buscador" class="hover:text-white transition">Buscador</a>
+      <a href="#destinos" class="hover:text-white transition">Destinos</a>
+      <a href="#opiniones" class="hover:text-white transition">Opiniones</a>
+      <a href="#contacto" class="hover:text-white transition">Contacto</a>
+    </div>
+    <a href="#buscador" class="btn-primary text-sm !py-3 !px-6">Buscar escapada</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="pt-40 pb-24 px-6 relative overflow-hidden">
+  <div class="absolute inset-0 -z-10 opacity-30" style="background:radial-gradient(circle at 20% 20%, rgba(14,165,233,.25), transparent 40%), radial-gradient(circle at 80% 60%, rgba(249,115,22,.15), transparent 45%)"></div>
+  <div class="max-w-5xl mx-auto text-center">
+    <span class="inline-block glass rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide uppercase accent mb-6">Agencia de viajes · Córdoba</span>
+    <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight mb-6">
+      Escapadas <span class="accent">curadas</span><br/>para los que no quieren improvisar
+    </h1>
+    <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+      Diseñamos fines de semana completos —vuelos, alojamiento y planes— a medida de cada viajero. Plazas limitadas, precios que suben cuanto más esperas. Tú solo tienes que hacer la maleta.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+      <a href="#buscador" class="btn-primary">🔍 Buscar mi escapada</a>
+      <a href="#destinos" class="px-7 py-[14px] rounded-xl font-semibold border border-[#2a2a2a] hover:border-[var(--accent)] transition">Ver destinos</a>
+    </div>
+    <div class="flex flex-wrap justify-center gap-x-10 gap-y-4 text-sm text-gray-400">
+      <div class="flex items-center gap-2"><span class="pulse-dot"></span> 37 personas mirando escapadas ahora mismo</div>
+      <div>✈️ +1.200 escapadas organizadas</div>
+      <div>⭐ 4,9/5 valoración media</div>
+      <div>📍 Salidas desde Córdoba y Sevilla</div>
+    </div>
+  </div>
+</header>
+
+<!-- FEATURE ESTRELLA: BUSCADOR -->
+<section id="buscador" class="px-6 py-20">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="accent font-semibold text-sm uppercase tracking-wider">Buscador de escapadas</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold mt-2 mb-4">Encuentra tu próxima escapada en segundos</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">Elige destino, fechas y cuántos viajáis. Te mostramos paquetes reales con plazas limitadas — y el contador no miente.</p>
+    </div>
+
+    <div class="glass rounded-3xl p-6 md:p-10">
+      <form id="searchForm" class="grid md:grid-cols-2 gap-8">
+        <!-- Destinos -->
+        <div class="md:col-span-2">
+          <label class="block text-sm font-semibold text-gray-300 mb-3">¿A dónde te apetece escaparte?</label>
+          <div id="destGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <!-- destinos generados por JS -->
+          </div>
+        </div>
+
+        <!-- Fechas -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-300 mb-2">Fecha de ida</label>
+          <input type="date" id="fechaIda" class="w-full bg-[#0e0e0e] border border-[#2a2a2a] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--accent)] transition"/>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-300 mb-2">Fecha de vuelta</label>
+          <input type="date" id="fechaVuelta" class="w-full bg-[#0e0e0e] border border-[#2a2a2a] rounded-xl px-4 py-3 focus:outline-none focus:border-[var(--accent)] transition"/>
+        </div>
+
+        <!-- Viajeros -->
+        <div class="md:col-span-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-300 mb-2">Número de viajeros</label>
+            <div class="flex items-center gap-4">
+              <button type="button" id="restarViajero" class="w-10 h-10 rounded-full border border-[#2a2a2a] hover:border-[var(--accent)] font-bold text-lg transition">−</button>
+              <span id="numViajeros" class="text-2xl font-extrabold w-8 text-center">2</span>
+              <button type="button" id="sumarViajero" class="w-10 h-10 rounded-full border border-[#2a2a2a] hover:border-[var(--accent)] font-bold text-lg transition">+</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary text-base">🔍 Buscar escapadas</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Resultados -->
+    <div id="resultados" class="mt-12"></div>
+  </div>
+</section>
+
+<!-- CATÁLOGO / SERVICIOS -->
+<section id="destinos" class="px-6 py-20 bg-[#0d0d0d]">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="accent font-semibold text-sm uppercase tracking-wider">Lo que hacemos por ti</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold mt-2">Más que billetes y hoteles</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="card p-7">
+        <div class="text-4xl mb-4">🧭</div>
+        <h3 class="font-bold text-lg mb-2">Itinerarios a medida</h3>
+        <p class="text-gray-400 text-sm">Diseñamos cada escapada según tus gustos: gastronomía, naturaleza, cultura o desconexión total. Nada de planes enlatados.</p>
+      </div>
+      <div class="card p-7">
+        <div class="text-4xl mb-4">🎟️</div>
+        <h3 class="font-bold text-lg mb-2">Plazas limitadas, precio cerrado</h3>
+        <p class="text-gray-400 text-sm">Trabajamos con cupos reducidos para garantizar calidad. Cuanto antes reserves, mejor precio te llevas — sin sorpresas después.</p>
+      </div>
+      <div class="card p-7">
+        <div class="text-4xl mb-4">🛎️</div>
+        <h3 class="font-bold text-lg mb-2">Acompañamiento 24/7</h3>
+        <p class="text-gray-400 text-sm">Desde que reservas hasta que vuelves a casa, tienes a tu agente de viaje a un wasap de distancia. Siempre.</p>
+      </div>
+      <div class="card p-7">
+        <div class="text-4xl mb-4">🧳</div>
+        <h3 class="font-bold text-lg mb-2">Todo incluido, todo claro</h3>
+        <p class="text-gray-400 text-sm">Vuelos, alojamiento, traslados y actividades en un único precio. Tú solo decides qué ropa meter en la maleta.</p>
+      </div>
+      <div class="card p-7">
+        <div class="text-4xl mb-4">🌅</div>
+        <h3 class="font-bold text-lg mb-2">Salidas en fin de semana</h3>
+        <p class="text-gray-400 text-sm">Pensadas para que no pierdas días de vacaciones: sales el viernes, vuelves el domingo con las pilas cargadas.</p>
+      </div>
+      <div class="card p-7">
+        <div class="text-4xl mb-4">💚</div>
+        <h3 class="font-bold text-lg mb-2">Trato cercano, de Córdoba</h3>
+        <p class="text-gray-400 text-sm">Somos un equipo pequeño que te conoce por tu nombre. Nada de centralitas ni esperas eternas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRUEBA SOCIAL -->
+<section id="opiniones" class="px-6 py-20">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="accent font-semibold text-sm uppercase tracking-wider">Lo que dicen al volver</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold mt-2">Viajeros que repiten</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 mb-14">
+      <div class="card p-7">
+        <div class="text-yellow-400 mb-3">★★★★★</div>
+        <p class="text-gray-300 text-sm mb-4">"Reservamos Lisboa un jueves por la noche y el sábado ya estábamos paseando por el Barrio Alto. Cero estrés, todo cuadrado."</p>
+        <p class="font-semibold text-sm">— Marta R., Córdoba</p>
+      </div>
+      <div class="card p-7">
+        <div class="text-yellow-400 mb-3">★★★★★</div>
+        <p class="text-gray-300 text-sm mb-4">"El contador de plazas no es postureo: nos quedamos sin sitio en Marrakech una vez por dudar dos días. La siguiente reservamos al momento."</p>
+        <p class="font-semibold text-sm">— Javier L., Sevilla</p>
+      </div>
+      <div class="card p-7">
+        <div class="text-yellow-400 mb-3">★★★★★</div>
+        <p class="text-gray-300 text-sm mb-4">"Nos organizaron una escapada a los Pirineos en 48 horas porque nos surgió un puente. Ni nosotros nos lo creíamos."</p>
+        <p class="font-semibold text-sm">— Lucía & Pablo, Córdoba</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="glass rounded-2xl py-8">
+        <div class="text-3xl md:text-4xl font-extrabold accent mb-1">+1.200</div>
+        <div class="text-sm text-gray-400">escapadas organizadas</div>
+      </div>
+      <div class="glass rounded-2xl py-8">
+        <div class="text-3xl md:text-4xl font-extrabold accent mb-1">4,9/5</div>
+        <div class="text-sm text-gray-400">valoración media</div>
+      </div>
+      <div class="glass rounded-2xl py-8">
+        <div class="text-3xl md:text-4xl font-extrabold accent mb-1">6</div>
+        <div class="text-sm text-gray-400">destinos estrella</div>
+      </div>
+      <div class="glass rounded-2xl py-8">
+        <div class="text-3xl md:text-4xl font-extrabold accent mb-1">98%</div>
+        <div class="text-sm text-gray-400">repetirían con nosotros</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="contacto" class="px-6 py-20">
+  <div class="max-w-4xl mx-auto text-center glass rounded-3xl p-10 md:p-16">
+    <h2 class="text-3xl md:text-5xl font-extrabold mb-4">¿Lista para tu próxima escapada, <span class="accent">papasito viajero</span>?</h2>
+    <p class="text-gray-400 mb-8 max-w-xl mx-auto">Cuéntanos qué te apetece y te preparamos una propuesta a medida en menos de 24 horas. Sin compromiso, sin letra pequeña.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#buscador" class="btn-primary">✈️ Empezar a buscar</a>
+      <a href="mailto:hola@tripnest.es" class="px-7 py-[14px] rounded-xl font-semibold border border-[#2a2a2a] hover:border-[var(--accent)] transition">Escríbenos: hola@tripnest.es</a>
+    </div>
+  </div>
+</section>
+
+<footer class="px-6 py-10 border-t border-[#1a1a1a] text-center text-sm text-gray-500">
+  <p>© 2026 TripNest · Agencia de viajes · Córdoba, España · Demo creada por <span class="accent font-semibold">PuntoZero</span></p>
+</footer>
+
+<script>
+(function(){
+  // ---------- Datos de destinos ----------
+  const DESTINOS = {
+    lisboa: {
+      nombre: 'Lisboa', emoji: '🚋',
+      gradiente: 'linear-gradient(135deg,#f97316,#ec4899)',
+      precioBase: 219, duracion: '3 noches',
+      desc: 'Tranvías amarillos, miradores con vistas al Tajo y la mejor pastelería de Europa a tu alcance.'
+    },
+    sevilla: {
+      nombre: 'Sevilla', emoji: '🏛️',
+      gradiente: 'linear-gradient(135deg,#fbbf24,#f97316)',
+      precioBase: 159, duracion: '2 noches',
+      desc: 'Tapas, flamenco y la Giralda al atardecer. La escapada perfecta para un fin de semana corto.'
+    },
+    costadelsol: {
+      nombre: 'Costa del Sol', emoji: '🏖️',
+      gradiente: 'linear-gradient(135deg,#0ea5e9,#22d3ee)',
+      precioBase: 189, duracion: '3 noches',
+      desc: 'Playas de arena fina, chiringuitos con espeto de sardinas y atardeceres que no querrás dejar de mirar.'
+    },
+    pirineos: {
+      nombre: 'Pirineos', emoji: '⛰️',
+      gradiente: 'linear-gradient(135deg,#0f766e,#0ea5e9)',
+      precioBase: 245, duracion: '4 noches',
+      desc: 'Aire puro, rutas de montaña y noches estrelladas en cabañas de piedra. Desconexión total garantizada.'
+    },
+    marrakech: {
+      nombre: 'Marrakech', emoji: '🕌',
+      gradiente: 'linear-gradient(135deg,#dc2626,#f59e0b)',
+      precioBase: 279, duracion: '4 noches',
+      desc: 'Zocos llenos de color, riads con encanto y la magia del desierto a un paso de la ciudad.'
+    },
+    roma: {
+      nombre: 'Roma', emoji: '🏟️',
+      gradiente: 'linear-gradient(135deg,#7c3aed,#f97316)',
+      precioBase: 259, duracion: '3 noches',
+      desc: 'Historia viva en cada esquina, pasta recién hecha y un Coliseo que impresiona tanto de día como de noche.'
+    }
+  };
+
+  const destKeys = Object.keys(DESTINOS);
+  let destinoSeleccionado = 'lisboa';
+  let numViajeros = 2;
+
+  // ---------- Construir botones de destino ----------
+  const destGrid = document.getElementById('destGrid');
+  destKeys.forEach(key => {
+    const d = DESTINOS[key];
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.dest = key;
+    btn.className = 'dest-btn flex items-center gap-2 px-4 py-3 text-sm font-semibold' + (key === destinoSeleccionado ? ' active' : '');
+    btn.innerHTML = `<span class="text-xl">${d.emoji}</span> ${d.nombre}`;
+    btn.addEventListener('click', () => {
+      destinoSeleccionado = key;
+      document.querySelectorAll('.dest-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+    destGrid.appendChild(btn);
+  });
+
+  // ---------- Selector de viajeros ----------
+  const numViajerosEl = document.getElementById('numViajeros');
+  document.getElementById('sumarViajero').addEventListener('click', () => {
+    numViajeros = Math.min(numViajeros + 1, 12);
+    numViajerosEl.textContent = numViajeros;
+  });
+  document.getElementById('restarViajero').addEventListener('click', () => {
+    numViajeros = Math.max(numViajeros - 1, 1);
+    numViajerosEl.textContent = numViajeros;
+  });
+
+  // ---------- Fechas por defecto ----------
+  const hoy = new Date();
+  const ida = new Date(hoy.getTime() + 12 * 24 * 60 * 60 * 1000);
+  const vuelta = new Date(hoy.getTime() + 15 * 24 * 60 * 60 * 1000);
+  const fmt = d => d.toISOString().split('T')[0];
+  document.getElementById('fechaIda').value = fmt(ida);
+  document.getElementById('fechaVuelta').value = fmt(vuelta);
+  document.getElementById('fechaIda').min = fmt(hoy);
+  document.getElementById('fechaVuelta').min = fmt(hoy);
+
+  // ---------- Resultados ----------
+  const resultadosEl = document.getElementById('resultados');
+  const contadores = []; // { intervalId }
+  const favoritos = new Set();
+
+  function limpiarContadores(){
+    contadores.forEach(c => clearInterval(c.intervalId));
+    contadores.length = 0;
+  }
+
+  function generarPaquetes(destinoPrincipal){
+    // El paquete principal es el destino elegido; añadimos 2-3 alternativas para completar el listado
+    const otros = destKeys.filter(k => k !== destinoPrincipal);
+    // mezcla simple determinista por fecha del día para variar un poco
+    const seed = new Date().getDate();
+    const orden = otros.slice().sort((a,b) => (a.charCodeAt(0)+seed) - (b.charCodeAt(0)+seed));
+    const seleccion = [destinoPrincipal, ...orden.slice(0, 3)];
+    return seleccion.map((key, i) => {
+      const d = DESTINOS[key];
+      const precio = Math.round((d.precioBase + i * 18) * (1 + (numViajeros > 4 ? 0.05 : 0)));
+      const plazasIniciales = [4, 7, 5, 9][i] || 6;
+      return { key, ...d, precio, plazasIniciales };
+    });
+  }
+
+  function crearTarjeta(paquete, idx){
+    const cardId = `pkg-${idx}-${paquete.key}`;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card overflow-hidden fade-in';
+    wrapper.style.animationDelay = (idx * 80) + 'ms';
+
+    wrapper.innerHTML = `
+      <div class="h-44 flex items-center justify-center relative" style="background:${paquete.gradiente}">
+        <span class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 70% 30%, rgba(255,255,255,.5), transparent 60%)"></span>
+        <span class="text-5xl mr-3 drop-shadow-lg">${paquete.emoji}</span>
+        <span class="text-3xl font-extrabold text-white drop-shadow-lg tracking-tight">${paquete.nombre}</span>
+        <button type="button" data-fav="${cardId}" class="fav-btn absolute top-4 right-4 text-2xl bg-black/30 backdrop-blur rounded-full w-10 h-10 flex items-center justify-center text-white">♡</button>
+      </div>
+      <div class="p-6">
+        <div class="flex items-baseline justify-between mb-2">
+          <div>
+            <span class="text-2xl font-extrabold">${paquete.precio} €</span>
+            <span class="text-sm text-gray-400"> / persona</span>
+          </div>
+          <span class="text-xs font-semibold uppercase tracking-wide text-gray-400">${paquete.duracion}</span>
+        </div>
+        <p class="text-sm text-gray-400 mb-4">${paquete.desc}</p>
+        <div class="flex items-center justify-between mb-5">
+          <span class="text-sm font-bold" data-plazas="${cardId}">⚡ Quedan ${paquete.plazasIniciales} plazas a este precio</span>
+        </div>
+        <button type="button" data-reservar="${cardId}" class="btn-primary w-full">Reservar</button>
+        <div data-confirmacion="${cardId}" class="mt-4 hidden text-sm rounded-xl p-4 glass"></div>
+      </div>
+    `;
+
+    // Favorito
+    const favBtn = wrapper.querySelector(`[data-fav="${cardId}"]`);
+    favBtn.addEventListener('click', () => {
+      if (favoritos.has(cardId)){
+        favoritos.delete(cardId);
+        favBtn.classList.remove('active');
+        favBtn.textContent = '♡';
+      } else {
+        favoritos.add(cardId);
+        favBtn.classList.add('active');
+        favBtn.textContent = '♥';
+      }
+    });
+
+    // Contador de plazas decreciente
+    let plazas = paquete.plazasIniciales;
+    const plazasEl = wrapper.querySelector(`[data-plazas="${cardId}"]`);
+    const intervalId = setInterval(() => {
+      if (plazas > 1 && Math.random() < 0.6){
+        plazas -= 1;
+        plazasEl.textContent = `⚡ Quedan ${plazas} plaza${plazas === 1 ? '' : 's'} a este precio`;
+        if (plazas <= 2){
+          plazasEl.classList.add('text-rose-400');
+        }
+      }
+      if (plazas <= 1){
+        plazasEl.textContent = `🔥 ¡Última plaza a este precio!`;
+        clearInterval(intervalId);
+      }
+    }, 4000 + idx * 600);
+    contadores.push({ intervalId });
+
+    // Reservar
+    const reservarBtn = wrapper.querySelector(`[data-reservar="${cardId}"]`);
+    const confirmEl = wrapper.querySelector(`[data-confirmacion="${cardId}"]`);
+    reservarBtn.addEventListener('click', () => {
+      const fechaIda = document.getElementById('fechaIda').value;
+      const fechaVuelta = document.getElementById('fechaVuelta').value;
+      const total = paquete.precio * numViajeros;
+      const localizador = 'TN-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+      confirmEl.classList.remove('hidden');
+      confirmEl.innerHTML = `
+        <p class="font-bold accent mb-1">✅ ¡Solicitud de reserva enviada!</p>
+        <p class="text-gray-300">Localizador <span class="font-mono">${localizador}</span> · ${paquete.nombre} · ${paquete.duracion}</p>
+        <p class="text-gray-300">Del ${fechaIda || 'fecha por confirmar'} al ${fechaVuelta || 'fecha por confirmar'} · ${numViajeros} viajero${numViajeros > 1 ? 's' : ''}</p>
+        <p class="text-gray-300">Total estimado: <span class="font-bold text-white">${total} €</span></p>
+        <p class="text-gray-500 mt-1">Te escribiremos en menos de 24h para confirmar plazas y cerrar los detalles.</p>
+      `;
+      reservarBtn.textContent = '✓ Solicitud enviada';
+      reservarBtn.disabled = true;
+      reservarBtn.style.opacity = '0.6';
+      reservarBtn.style.cursor = 'default';
+    });
+
+    return wrapper;
+  }
+
+  function renderResultados(){
+    limpiarContadores();
+    favoritos.clear();
+    resultadosEl.innerHTML = '';
+
+    const titulo = document.createElement('div');
+    titulo.className = 'flex items-center justify-between mb-6';
+    titulo.innerHTML = `
+      <h3 class="text-xl font-bold">Escapadas disponibles para <span class="accent">${DESTINOS[destinoSeleccionado].nombre}</span> y alrededores</h3>
+      <span class="text-sm text-gray-400">${numViajeros} viajero${numViajeros > 1 ? 's' : ''}</span>
+    `;
+    resultadosEl.appendChild(titulo);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid sm:grid-cols-2 lg:grid-cols-4 gap-6';
+    resultadosEl.appendChild(grid);
+
+    const paquetes = generarPaquetes(destinoSeleccionado);
+    paquetes.forEach((p, i) => grid.appendChild(crearTarjeta(p, i)));
+
+    resultadosEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.getElementById('searchForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    renderResultados();
+  });
+
+  // Resultados iniciales para que la sección no se vea vacía
+  renderResultados();
+})();
+</script>
+</body>
+</html>
